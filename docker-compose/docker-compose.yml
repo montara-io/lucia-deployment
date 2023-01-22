@@ -20,6 +20,16 @@ services:
       test: "exit 0"
     networks:
       - lucia-network
+  flyway:
+    image: flyway/flyway
+    command: -url=jdbc:postgresql://db:5432/data_pipeline -schemas=postgres -user=postgres -password=postgres -connectRetries=60 migrate
+    volumes:
+      - ../env-setup/migrations:/flyway/sql
+    networks:
+      - lucia-network
+    depends_on:
+      db:
+        condition: service_healthy
   lucia-web-backend:
     image: avivvegh90/lucia-backend
     container_name: lucia-web-backend
