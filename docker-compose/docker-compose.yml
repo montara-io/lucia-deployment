@@ -4,14 +4,10 @@ services:
   db:
     image: kartoza/postgis:13-3.1
     environment:
-      # If you need to create multiple database you can add coma separated databases eg gis,data
-      - POSTGRES_DB=postgres,data_pipeline
+      - POSTGRES_DB=data_pipeline
       - POSTGRES_USER=postgres
       - POSTGRES_PASS=postgres
       - ALLOW_IP_RANGE=0.0.0.0/0
-      # Add extensions you need to be enabled by default in the DB. Default are the five specified below
-      # - POSTGRES_MULTIPLE_EXTENSIONS=postgis,metrics,org
-      # - POSTGRES_DBNAME=postgis,metrics,org
     ports:
       - 5432:5432
     restart: on-failure
