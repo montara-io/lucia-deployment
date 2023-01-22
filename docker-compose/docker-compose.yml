@@ -3,7 +3,6 @@ version: '3.8'
 services:
   db:
     image: kartoza/postgis:13-3.1
-    container_name: db
     environment:
       # If you need to create multiple database you can add coma separated databases eg gis,data
       - POSTGRES_DB=postgres,data_pipeline
@@ -22,7 +21,6 @@ services:
       - lucia-network
   flyway:
     image: flyway/flyway
-    container_name: flyway
     command: -url=jdbc:postgresql://db:5432/data_pipeline -schemas=postgres -user=postgres -password=postgres -connectRetries=60 migrate
     volumes:
       - ../env-setup/migrations:/flyway/sql
@@ -33,7 +31,6 @@ services:
         condition: service_healthy
   lucia-web-backend:
     image: avivvegh90/lucia-backend
-    container_name: lucia-web-backend
     ports:
       - 3001:3000
     networks:
@@ -51,7 +48,6 @@ services:
         condition: service_completed_successfully
   lucia-web-ui:
     image: avivvegh90/lucia-frontend
-    container_name: lucia-web-ui
     ports:
       - 8080:80
     networks:
