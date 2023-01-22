@@ -11,7 +11,8 @@ docker compose will setup the lucia environment running the following services:
 
 In order to run the Lucia environment in docker compose run the following command
 ```
-docker-compose -p lucia up -d 
+cd docker-compose
+docker-compose -p lucia up -d   
 ```
 
 This will run it under the lucia project name

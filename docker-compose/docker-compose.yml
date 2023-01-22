@@ -17,14 +17,15 @@ services:
       - lucia-network
   flyway:
     image: flyway/flyway
-    command: -url=jdbc:postgresql://db:5432/data_pipeline -schemas=postgres -user=postgres -password=postgres -connectRetries=60 migrate
+    command: -url=jdbc:postgresql://db:5432/data_pipeline -schemas=postgres -user=postgres -password=postgres migrate
+    ports:
+      - 5111:5111
     volumes:
       - ../env-setup/migrations:/flyway/sql
     networks:
       - lucia-network
     depends_on:
-      db:
-        condition: service_healthy
+      - db
   lucia-web-backend:
     image: avivvegh90/lucia-backend
     ports:
@@ -38,10 +39,8 @@ services:
       DB_USER: postgres
       DB_PW: postgres
     depends_on:
-      db:
-        condition: service_healthy
-      flyway:
-        condition: service_completed_successfully
+      - db
+      - flyway
   lucia-web-ui:
     image: avivvegh90/lucia-frontend
     ports:
@@ -52,8 +51,7 @@ services:
       NODE_ENV: local
       BACKEND_URL: "http://localhost:3001"
     depends_on:
-      lucia-web-backend:
-        condition: service_started
+      - lucia-web-backend
 networks:
   lucia-network:
 
