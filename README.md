@@ -25,7 +25,7 @@ This will run it under the lucia project name
 
 ### local env setup debugging
 
-In order to run the Lucia environment in docker compose run the following command
+In order to run the Lucia local environment in docker compose and debug with attach docker, run the following command
 
 1. clone the repositories with the following command:
 
