@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+set -e
+
+export HOST_IP=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)
+
+
+function update() {
+	function split() {
+		IFS='/'
+		read -ra myarray <<<"$1"
+		echo ${myarray[${#myarray[@]} - 1]}
+	}
+	function getURL() {
+		echo git@github.com:montara-io/$1.git
+	}
+	declare -a repos=("lucia-data" "lucia-spark-listener" "lucia-web")
+	mkdir -p local-services
+	cd local-services
+	for t in ${repos[@]}; do
+		local folder=$(split $t)
+		echo "Building $folder!"
+		if [ ! -d $folder ]; then
+			local url=$(getURL $t)
+			git clone $url
+			cd $folder
+		else
+			cd $folder
+			git pull
+		fi
+		cd ..
+		echo "done with $folder!"
+	done
+	cd ..
+}
+
+function default {
+	update
+}
+
+"${@:-default}"
