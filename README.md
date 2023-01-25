@@ -27,9 +27,11 @@ This will run it under the lucia project name
 
 ### local env setup debugging
 
-In order to run the Lucia local environment in docker compose and debug with attach docker, run the following command
+In order to build and then run the Lucia local environment in docker compose and debug with attach docker, 
+run the following command
 
-1. clone the repositories with the following command:
+1. clone and build the repositories with the following command 
+   NOTE: this will clone, then build the lucia projects locally, for this you need to have ssh configured on github:
 
    ```
    sh build
@@ -38,10 +40,10 @@ In order to run the Lucia local environment in docker compose and debug with att
 2. run docker-compose with the following command:
    ```
    cd docker-compose
-   docker-compose -f docker-compose-local.yml  up -d --build
+   docker-compose -p lucia-local -f docker-compose-local.yml  up -d --build
    ```
 
-This will run it under the lucia project name
+This will run it under the lucia-local project name
 
 ## helm chart
 
