@@ -40,7 +40,7 @@ EXECUTE PROCEDURE trigger_set_timestamp();
 
 CREATE TABLE raw_event
 (
-    id                          INTEGER PRIMARY KEY,
+    id                          uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     job_run_id                  VARCHAR,
     "event"                     JSONB,
     created                     TIMESTAMP DEFAULT now(),
