@@ -25,6 +25,35 @@ services:
     depends_on:
       db:
         condition: service_healthy
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    restart: always
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - lucia-network
+  kafka1:
+    hostname: kafka1
+    healthcheck:
+      test: ["CMD-SHELL", "echo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9092
+      KAFKA_BROKER_ID: 1
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    networks:
+      - lucia-network
   lucia-web-backend:
     image: avivvegh90/lucia-backend
     ports:
@@ -67,6 +96,21 @@ services:
         condition: service_healthy
       flyway:
         condition: service_completed_successfully
+      kafka1:
+        condition: service_healthy
+#  lucia-spark-job-processor:
+#    image: avivvegh90/spark_job_processor
+#    ports:
+#      - 8182:5000
+#    networks:
+#      - lucia-network
+#    depends_on:
+#      db:
+#        condition: service_healthy
+#      flyway:
+#        condition: service_completed_successfully
+#      kafka1:
+#        condition: service_healthy
 networks:
   lucia-network:
 

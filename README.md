@@ -9,6 +9,7 @@ docker compose will setup the lucia environment running the following services:
 
 - db - a postgres db
 - flyway - migration scripts setting up the db schema
+- kafka - messaging service used to communicate between services
 - lucia-web-backend - the web backend service supporting the apis needed by the UI
 - lucia-web-ui - the web UI
 
@@ -18,6 +19,7 @@ In order to run the Lucia environment in docker compose run the following comman
 
     ```
     cd docker-compose
+    docker-compose pull
     docker-compose -p lucia up -d
     ```
 
