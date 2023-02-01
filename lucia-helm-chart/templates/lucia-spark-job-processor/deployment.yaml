@@ -30,5 +30,7 @@ spec:
               value: {{ .Values.postgresql.auth.password | quote }}
             - name: DB_USER
               value: {{ .Values.postgresql.auth.username | quote }}
+            - name: KAFKA_HOST
+              value: "{{ .Release.Name }}-kafka-headless"
             - name: NODE_ENV
               value: local
