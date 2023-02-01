@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: lucia-web-backend
+  name: lucia-spark-job-processor
 spec:
   replicas: {{ .Values.services.replicas }}
   selector:
     matchLabels:
-      app: lucia-web-backend
+      app: lucia-spark-job-processor
   template:
     metadata:
       labels:
-        app: lucia-web-backend
+        app: lucia-spark-job-processor
     spec:
       containers:
-        - name: lucia-web-backend
-          image: montaraio/lucia-backend
+        - name: lucia-spark-job-processor
+          image: montaraio/lucia-spark-job-processor
           ports:
-            - containerPort: 3000
+            - containerPort: 5000
           env:
             - name: DB_HOST
               {{- if .Values.db.createPostgres }}

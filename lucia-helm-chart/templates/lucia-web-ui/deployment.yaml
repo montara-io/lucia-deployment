@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: lucia-web-ui
-          image: avivvegh90/lucia-frontend
+          image: montaraio/lucia-frontend
           ports:
             - containerPort: 80
           env:
