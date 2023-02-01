@@ -29,7 +29,7 @@ services:
     image: confluentinc/cp-zookeeper:latest
     restart: always
     ports:
-      - 22181:2181
+      - 2181:2181
     environment:
       ZOOKEEPER_SERVER_ID: 1
       ZOOKEEPER_CLIENT_PORT: 2181
@@ -79,10 +79,14 @@ services:
   lucia-web-ui:
     build:
       context: ../local-services/lucia-web/packages/frontend
+      dockerfile: Dockerfile.debug
     ports:
-      - 8080:80
+      - 3000:3000
     networks:
       - lucia-network
+    volumes:
+      - /app/node_modules
+      - ../local-services/lucia-web/packages/frontend/.:/app
     environment:
       NODE_ENV: local
       BACKEND_URL: "http://localhost:3001"
