@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lucia-web-ui
+spec:
+  replicas: {{ .Values.services.replicas }}
+  selector:
+    matchLabels:
+      app: lucia-web-ui
+  template:
+    metadata:
+      labels:
+        app: lucia-web-ui
+    spec:
+      containers:
+        - name: lucia-web-ui
+          image: montaraio/lucia-frontend
+          ports:
+            - containerPort: 80
+          env:
+            - name: BACKEND_URL
+              value: http://localhost:3001
+            - name: NODE_ENV
+              value: local
