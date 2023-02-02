@@ -120,7 +120,7 @@ services:
       DB_USER: postgres
       DB_PW: postgres
       DB_NAME: data_pipeline
-      KAFKA_HOST: kafka1  
+      KAFKA_HOST: kafka1
       KAFKA_PORT: 9092
     depends_on:
       db:

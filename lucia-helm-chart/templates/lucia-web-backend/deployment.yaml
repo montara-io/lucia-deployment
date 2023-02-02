@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lucia-web-backend
+spec:
+  replicas: {{ .Values.services.replicas }}
+  selector:
+    matchLabels:
+      app: lucia-web-backend
+  template:
+    metadata:
+      labels:
+        app: lucia-web-backend
+    spec:
+      containers:
+        - name: lucia-web-backend
+          image: montaraio/lucia-backend
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DB_HOST
+              {{- if .Values.db.createPostgres }}
+              value: "{{ .Release.Name}}-postgresql"
+              {{- else }}
+              value:  {{ .Values.db.host }}
+              {{- end }}
+            - name: DB_PORT
+              value: {{ .Values.postgresql.containerPorts.postgresql | quote }}
+            - name: DB_PW
+              value: {{ .Values.postgresql.auth.password | quote }}
+            - name: DB_USER
+              value: {{ .Values.postgresql.auth.username | quote }}
+            - name: NODE_ENV
+              value: local

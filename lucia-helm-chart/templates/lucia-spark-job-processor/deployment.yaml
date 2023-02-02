@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lucia-spark-job-processor
+spec:
+  replicas: {{ .Values.services.replicas }}
+  selector:
+    matchLabels:
+      app: lucia-spark-job-processor
+  template:
+    metadata:
+      labels:
+        app: lucia-spark-job-processor
+    spec:
+      containers:
+        - name: lucia-spark-job-processor
+          image: montaraio/lucia-spark-job-processor
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DB_HOST
+              {{- if .Values.db.createPostgres }}
+              value: "{{ .Release.Name}}-postgresql"
+              {{- else }}
+              value:  {{ .Values.db.host }}
+              {{- end }}
+            - name: DB_PORT
+              value: {{ .Values.postgresql.containerPorts.postgresql | quote }}
+            - name: DB_PW
+              value: {{ .Values.postgresql.auth.password | quote }}
+            - name: DB_USER
+              value: {{ .Values.postgresql.auth.username | quote }}
+            - name: KAFKA_HOST
+              value: "{{ .Release.Name }}-kafka-headless"
+            - name: NODE_ENV
+              value: local

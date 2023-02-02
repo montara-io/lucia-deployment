@@ -1,0 +1,33 @@
+services:
+  replicas: 1
+db:
+  createPostgres: true
+  host: ~
+postgresql:
+  auth:
+    username: lucia
+    database: data_pipeline
+    password: lucia
+  architecture: standalone
+  containerPorts:
+    postgresql: 5432
+  primary:
+    persistence:
+      enabled: true
+      existingClaim: postgres-pv-claim
+  volumePermissions:
+    enabled: true
+  replication:
+    enabled: false
+kafka:
+  autoCreateTopicsEnable: true
+  persistence:
+    enabled: true
+    existingClaim: kafka-pv-claim
+  zookeeper:
+    persistence:
+      enabled: true
+      existingClaim: kafka-pv-claim
+  volumePermissions:
+    enabled: true
+
