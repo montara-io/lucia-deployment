@@ -71,6 +71,7 @@ services:
       DB_PORT: 5432
       DB_USER: postgres
       DB_PW: postgres
+      DB_NAME: data_pipeline
     depends_on:
       db:
         condition: service_healthy
@@ -94,12 +95,21 @@ services:
       lucia-web-backend:
         condition: service_started
   lucia-spark-endpoint:
+    command: python -m flask --app spark_endpoint/app.py run --host=0.0.0.0
     build:
-      context: ../local-services/lucia-data/spark_endpoint
+      context: ../local-services/lucia-data
     ports:
       - 8181:5000
     networks:
       - lucia-network
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PW: postgres
+      DB_NAME: data_pipeline
+      KAFKA_HOST: kafka1
+      KAFKA_PORT: 9092
     depends_on:
       db:
         condition: service_healthy
@@ -108,12 +118,21 @@ services:
       kafka1:
         condition: service_healthy
   lucia-spark-job-processor:
+    command: python -m spark_job_processor.app
     build:
-      context: ../local-services/lucia-data/spark_job_processor
+      context: ../local-services/lucia-data
     ports:
       - 8182:5000
     networks:
       - lucia-network
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PW: postgres
+      DB_NAME: data_pipeline
+      KAFKA_HOST: kafka1
+      KAFKA_PORT: 9092
     depends_on:
       db:
         condition: service_healthy
