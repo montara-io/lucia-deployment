@@ -55,7 +55,7 @@ services:
     networks:
       - lucia-network
   lucia-web-backend:
-    image: avivvegh90/lucia-backend
+    image: montaraio/lucia-backend
     ports:
       - 3001:3000
     networks:
@@ -66,13 +66,15 @@ services:
       DB_PORT: 5432
       DB_USER: postgres
       DB_PW: postgres
+      DB_NAME: data_pipeline
+      KAFKA_HOST: kafka1
     depends_on:
       db:
         condition: service_healthy
       flyway:
         condition: service_completed_successfully
   lucia-web-ui:
-    image: avivvegh90/lucia-frontend
+    image: montaraio/lucia-frontend
     ports:
       - 8080:80
     networks:
@@ -84,13 +86,20 @@ services:
       lucia-web-backend:
         condition: service_started
   lucia-spark-endpoint:
-    image: avivvegh90/lucia-spark-endpoint
+    image: montaraio/lucia-data
+    command: python -m flask --app spark_endpoint/app.py run --host=0.0.0.0
     ports:
       - 8181:5000
     networks:
       - lucia-network
     environment:
-      NODE_ENV: local
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PW: postgres
+      DB_NAME: data_pipeline
+      KAFKA_HOST: kafka1
+      KAFKA_PORT: 9092
     depends_on:
       db:
         condition: service_healthy
@@ -98,19 +107,28 @@ services:
         condition: service_completed_successfully
       kafka1:
         condition: service_healthy
-#  lucia-spark-job-processor:
-#    image: avivvegh90/spark_job_processor
-#    ports:
-#      - 8182:5000
-#    networks:
-#      - lucia-network
-#    depends_on:
-#      db:
-#        condition: service_healthy
-#      flyway:
-#        condition: service_completed_successfully
-#      kafka1:
-#        condition: service_healthy
+  lucia-spark-job-processor:
+    image: montaraio/lucia-data
+    command: python -m spark_job_processor.app
+    ports:
+      - 8182:5000
+    networks:
+      - lucia-network
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PW: postgres
+      DB_NAME: data_pipeline
+      KAFKA_HOST: kafka1  
+      KAFKA_PORT: 9092
+    depends_on:
+      db:
+        condition: service_healthy
+      flyway:
+        condition: service_completed_successfully
+      kafka1:
+        condition: service_healthy
 networks:
   lucia-network:
 
