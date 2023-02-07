@@ -19,7 +19,7 @@ services:
     image: flyway/flyway
     command: -url=jdbc:postgresql://db:5432/data_pipeline -schemas=postgres -user=postgres -password=postgres migrate
     volumes:
-      - ../env-setup/migrations:/flyway/sql
+      - ../lucia-helm-chart/env-setup/migrations:/flyway/sql
     networks:
       - lucia-network
     depends_on:
