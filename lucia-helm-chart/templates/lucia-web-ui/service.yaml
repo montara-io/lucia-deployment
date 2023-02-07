@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lucia-web-ui
+{{/*  annotations:*/}}
+{{/*    service.beta.kubernetes.io/aws-load-balancer-internal: "true"*/}}
+spec:
+  type: LoadBalancer
+  selector:
+    app: lucia-web-ui
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 3000

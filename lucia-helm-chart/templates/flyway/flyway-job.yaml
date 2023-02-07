@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migration-job
+  annotations:
+    "helm.sh/hook": post-install, post-upgrade
+    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  ttlSecondsAfterFinished: 120
+  template:
+    metadata:
+      name: "{{ .Release.Name }}-flyway"
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: flyway
+        image: "flyway/flyway"
+        args:
+          {{- if .Values.db.createPostgres }}
+          - -url=jdbc:postgresql://{{ .Release.Name}}-postgresql:{{ .Values.postgresql.containerPorts.postgresql}}/{{ .Values.postgresql.auth.database}}
+          {{- else }}
+          - -url=jdbc:postgresql://{{ .Values.db.host }}:{{ .Values.postgresql.containerPorts.postgresql}}/{{ .Values.postgresql.auth.database}}
+          value:  {{ .Values.db.host }}
+          {{- end }}
+          - -user={{ .Values.postgresql.auth.username }}
+          - -password={{ .Values.postgresql.auth.password }}
+          - migrate
+        env:
+          - name: FLYWAY_LOCATIONS
+            value: 'filesystem:/flyway/sql'
+        volumeMounts:
+          - name: flyway-volume
+            mountPath: /flyway/sql
+      volumes:
+        - name: flyway-volume
+          configMap:
+            name: flyway-volume-cm
+

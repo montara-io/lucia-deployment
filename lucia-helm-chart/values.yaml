@@ -12,9 +12,11 @@ postgresql:
   containerPorts:
     postgresql: 5432
   primary:
+    service:
+      type: LoadBalancer
     persistence:
       enabled: true
-      existingClaim: postgres-pv-claim
+#      existingClaim: postgres-pv-claim
   volumePermissions:
     enabled: true
   replication:
@@ -23,11 +25,10 @@ kafka:
   autoCreateTopicsEnable: true
   persistence:
     enabled: true
-    existingClaim: kafka-pv-claim
+#    existingClaim: kafka-pv-claim
   zookeeper:
     persistence:
       enabled: true
       existingClaim: kafka-pv-claim
   volumePermissions:
     enabled: true
-
