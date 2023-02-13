@@ -16,6 +16,13 @@ spec:
                 name: lucia-web-backend
                 port:
                   number: 3001
+          - path: /spark/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: lucia-spark-endpoint
+                port:
+                  number: 8082
 
 ---
 
