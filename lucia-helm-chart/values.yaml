@@ -1,3 +1,6 @@
+#edit this hostname to the domain name where the service will run,
+#in case of AWS it could be the LB DNS name (for example *.us-east-1.elb.amazonaws.com)
+hostname: localhost
 services:
   replicas: 1
 db:
@@ -12,23 +15,22 @@ postgresql:
   containerPorts:
     postgresql: 5432
   primary:
-    service:
-      type: LoadBalancer
+#    service:
+#      type: LoadBalancer
     persistence:
-      enabled: true
+      enabled: false
 #      existingClaim: postgres-pv-claim
   volumePermissions:
-    enabled: true
+    enabled: false
   replication:
     enabled: false
 kafka:
   autoCreateTopicsEnable: true
   persistence:
-    enabled: true
+    enabled: false
 #    existingClaim: kafka-pv-claim
   zookeeper:
     persistence:
-      enabled: true
-      existingClaim: kafka-pv-claim
+      enabled: false
   volumePermissions:
-    enabled: true
+    enabled: false

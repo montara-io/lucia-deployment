@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: lucia-web-backend
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: lucia-web-backend
   ports:

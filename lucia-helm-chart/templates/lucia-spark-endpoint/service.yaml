@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: lucia-spark-endpoint
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: lucia-spark-endpoint
   ports:

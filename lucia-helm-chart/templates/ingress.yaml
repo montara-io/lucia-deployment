@@ -1,0 +1,37 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-backend
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: $1
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /api/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: lucia-web-backend
+                port:
+                  number: 3001
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-ui
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: lucia-web-ui
+                port:
+                  number: 8080
