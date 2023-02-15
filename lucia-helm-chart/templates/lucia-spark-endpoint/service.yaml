@@ -8,5 +8,5 @@ spec:
     app: lucia-spark-endpoint
   ports:
   - protocol: TCP
-    port: 8082
+    port: 5000
     targetPort: 5000

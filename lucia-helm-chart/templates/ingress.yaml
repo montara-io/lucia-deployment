@@ -15,14 +15,29 @@ spec:
               service:
                 name: lucia-web-backend
                 port:
-                  number: 3001
+                  number: 3000
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-spark
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: $1
+    large-client-header-buffers: "4 16k"
+
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
           - path: /spark/(.*)
             pathType: Prefix
             backend:
               service:
                 name: lucia-spark-endpoint
                 port:
-                  number: 8082
+                  number: 5000
 
 ---
 
@@ -41,4 +56,4 @@ spec:
               service:
                 name: lucia-web-ui
                 port:
-                  number: 8080
+                  number: 3000

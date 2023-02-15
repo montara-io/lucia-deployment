@@ -25,6 +25,7 @@ spec:
           {{- end }}
           - -user={{ .Values.postgresql.auth.username }}
           - -password={{ .Values.postgresql.auth.password }}
+          - -defaultSchema=lucia
           - migrate
         env:
           - name: FLYWAY_LOCATIONS

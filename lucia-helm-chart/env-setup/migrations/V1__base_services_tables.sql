@@ -40,7 +40,7 @@ EXECUTE PROCEDURE trigger_set_timestamp();
 
 CREATE TABLE raw_event
 (
-    id                          uuid PRIMARY KEY DEFAULT public.uuid_generate_v4(),
+    id                          uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     job_run_id                  VARCHAR,
     job_id                      VARCHAR,
     pipeline_run_id             VARCHAR,
