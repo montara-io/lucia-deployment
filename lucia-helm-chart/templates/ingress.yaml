@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: ingress-backend
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: $1
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   ingressClassName: nginx
   rules:
@@ -24,8 +24,6 @@ metadata:
   name: ingress-spark
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: $1
-    large-client-header-buffers: "4 16k"
-
 spec:
   ingressClassName: nginx
   rules:
