@@ -23,6 +23,18 @@ spec:
                 name: lucia-spark-endpoint
                 port:
                   number: 5000
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-ui
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
           - path: /
             pathType: Prefix
             backend:
