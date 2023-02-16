@@ -75,6 +75,8 @@ docker compose will setup the lucia environment running the following services:
 - kafka - messaging service used to communicate between services
 - lucia-web-backend - the web backend service supporting the apis needed by the UI
 - lucia-web-ui - the web UI
+- lucia-spark-endpoint - endpoint exposed for the spark connector
+- lucia spark-job-processor - backend service that processes the spark events
 
 ### env setup
 
@@ -109,9 +111,23 @@ run the following command
 This will run it under the lucia-local project name
 
 ## helm chart
+The followint command will deploy the Lucia helm chart
+Note: You should have Helm preinstall and configured and kubernetes to point to the right location
 
 ```
+ cd lucia-helm-chart
+ helm install <chart-name> .
+```
+If you want to use a specific namespace use (for example 'lucia')
 
+```
+   helm install <chart-name> . --create-namespace --namespace lucia
+```
+
+In order to update to the latest helm do git pull and then
+
+```
+   helm upgrade <chart-name> . 
 ```
 
 ## Lucia projects

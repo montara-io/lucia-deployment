@@ -4,5 +4,17 @@ Your release is named {{ .Release.Name }}.
 
 To learn more about the release, try:
 
-  $ helm status {{ .Release.Name }}
   $ helm get all {{ .Release.Name }}
+
+In  order to get the URL to access the service use kubectl to get the ingress service external ip
+Note: if you installed it under a different namespace use kubectl --namespace=lucia
+
+
+  $ kubectl get svc {{ .Release.Name }}-ingress-nginx-controller
+
+Note: if you installed it under a different namespace use kubectl --namespace=lucia
+
+  $ kubectl get svc {{ .Release.Name }}-ingress-nginx-controller --namespace={{ .Release.Namespace }}
+
+Go to your browser on this URL
+In order to configure your spark endpoint use the above address with the /spark/ prefix

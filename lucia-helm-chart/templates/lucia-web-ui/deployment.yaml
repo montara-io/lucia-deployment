@@ -16,9 +16,7 @@ spec:
         - name: lucia-web-ui
           image: montaraio/lucia-frontend
           ports:
-            - containerPort: 80
+            - containerPort: 3000
           env:
-            - name: BACKEND_URL
-              value: http://localhost:3001
             - name: NODE_ENV
               value: local

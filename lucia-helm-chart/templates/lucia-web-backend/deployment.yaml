@@ -31,4 +31,4 @@ spec:
             - name: DB_USER
               value: {{ .Values.postgresql.auth.username | quote }}
             - name: NODE_ENV
-              value: local
+              value: prod
